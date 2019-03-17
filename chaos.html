@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <link href="https://fonts.googleapis.com/css?family=Lato:100,300,600" rel="stylesheet" type="text/css">
         <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
-        <link type="text/css" rel="stylesheet" href="css/css.css">
+        <link type="text/css" rel="stylesheet" href="css.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
@@ -14,11 +14,34 @@
         <title>Canvas</title>
     </head>
     <body>
+        <div class = "sidePanel">
+            <div class="slidecontainer">
+                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                    <p>Value: <span id="fieldSliderValue"></span></p>
+                    <button class = "btn btn-lg btn-primary renderChaos"> Generate </button>
+                    <button class = "btn btn-lg btn-primary animate"> Anim </button>
+            </div>
+        </div>    
             <canvas id="myCanvas" width="800" height="600"
             style="border:1px solid #d3d3d3;">
             Your browser does not support the canvas element.
             </canvas>
+
     </body>
+    <script>
+        let slider = document.querySelector(".slider");
+        let fieldSliderValue = document.querySelector("#fieldSliderValue");
+
+        fieldSliderValue.innerHTML = slider.value *100;
+        slider.oninput = function() {
+            fieldSliderValue.innerHTML = this.value * 100;
+        }
+
+        
+    </script>
+    <script>
+        
+    </script>
     <script>
             var canvas = document.getElementById("myCanvas");
             var ctx = canvas.getContext("2d");
@@ -42,7 +65,7 @@
             drawStartPoints();
 
             let t1 = Date.now();
-            render();
+            render(1000);
             console.log(Date.now()- t1);
 
             // setInterval(function(){ 
@@ -52,18 +75,19 @@
                 
             // }, 25);
 
-            function render(){    
-                for(let n=0;n<200000; n++){
+            function render(points){    
+                for(let n=0;n<points; n++){
                     ctx.rect(start.x,start.y,1,1);               
                     choseTargetPoint();
                     calculateStep();
-                    ctx.rect(stop.x,stop.y,1,1);
+                    //ctx.rect(stop.x,stop.y,1,1);
+                    ctx.strokeRect(stop.x,stop.y,1,1);
                     //ctx.stroke();
                     start.x = stop.x;
                     start.y = stop.y;
                     //b.x += 1;                               
                 }
-                ctx.stroke();
+                //ctx.stroke(); 
                 //b.x += 1;                               
                 
                 //requestAnimationFrame(render);
@@ -96,7 +120,7 @@
                 ctx.rect(b.x,b.y, 1,1);
                 ctx.rect(c.x,c.y, 1,1);
                 ctx.stroke();
-                 
+
             }
             
             function drawPoint(){
@@ -117,6 +141,22 @@
                 else {stop.y = start.y - ((start.y - target.y)*step)}
             }
            
+document.querySelector(".renderChaos").addEventListener("click",()=>{
+    let pointsNumber = document.querySelector("#fieldSliderValue").innerHTML;
+    console.log(pointsNumber.innerHTML);
+    ctx.clearRect(0,0, width, height);
+    render(pointsNumber*1);
+}, false);
 
+document.querySelector(".animate").addEventListener("click",()=>{
+    let i =0;
+    for(let i = 0; i<800; i++){
+        setTimeout(() => {
+            ctx.clearRect(0,0, width, height);
+            render(100);  
+        }, 3000);
+        b.x = i;
+    }
+},false);
     </script>
 </html>
