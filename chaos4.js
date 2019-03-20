@@ -1,3 +1,4 @@
+
 var canvas = document.getElementById("squer");
 var ctx = canvas.getContext("2d");
 const width = canvas.width;

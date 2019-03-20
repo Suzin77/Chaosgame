@@ -87,6 +87,12 @@ var canvas = document.getElementById("myCanvas");
                 if (target.y > start.y){stop.y = start.y + ((target.y - start.y)*step)}
                 else {stop.y = start.y - ((start.y - target.y)*step)}
             }
+
+            function targetId(e){
+                config.startingPoints =  e.target.id*1;
+             }
+
+document.querySelector('.radio-points').addEventListener('click',targetId, true);
            
 document.querySelector(".renderChaos").addEventListener("click",()=>{
     let pointsNumber = document.querySelector("#fieldSliderValue").innerHTML;
