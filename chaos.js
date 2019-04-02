@@ -8,6 +8,10 @@ var canvas = document.getElementById("myCanvas");
                             window.webkitRequestAnimationFrame || 
                             window.msRequestAnimationFrame;
 
+            const config = {                
+                startingPoints: 0
+            };
+
             let a = {x:0, y:canvas.height};
             let b = {x:canvas.width/2, y:0};
             let c = {x:canvas.width , y:canvas.height}
@@ -22,6 +26,10 @@ var canvas = document.getElementById("myCanvas");
             let t1 = Date.now();
             render(1000);
             console.log(Date.now()- t1);
+
+            function init(){
+
+            }
 
             function render(points){    
                 for(let n=0;n<points; n++){
@@ -90,6 +98,7 @@ var canvas = document.getElementById("myCanvas");
 
             function targetId(e){
                 config.startingPoints =  e.target.id*1;
+                //console.log("ilosc poczatkowa: "+ config.startingPoints);
              }
 
 document.querySelector('.radio-points').addEventListener('click',targetId, true);

@@ -4,8 +4,12 @@ var ctx = canvas.getContext("2d");
 const width = canvas.width;
 const height = canvas.height;
 
+const config = {                
+    startingPoints: 3 //here must be function to get actual radio checked on load
+};
+
 let a = {x:0, y:canvas.height};
-let b = {x:canvas.width, y:0};
+let b = {x:canvas.width/2, y:0};
 let c = {x:canvas.width , y:canvas.height};
 let d = {x:0, y:0};
 
@@ -20,15 +24,25 @@ let currentChose = 0;
 let t1 = Date.now();
 //for(let m = 0 ;  m<canvas.width; m++){
 //    b.x = m;
+function squereCanvasWidth(){
+    if(config.startingPoints === 4){
+        b.x = canvas.width;
+    } else if (config.startingPoints === 3){
+        b.x = canvas.width/2;
+    }
+}
+
 function render(points){
     for(let n=0;n<points; n++){
-        let count = 1;
+        //let count = 1;
         ctx.rect(start.x,start.y,1,1);
         currentChose = choseTargetPoint();
-        while(currentChose === lastChose){                
-            currentChose = choseTargetPoint();
-            count++;
-            //debugger;
+        if (config.startingPoints === 4){
+            while(currentChose === lastChose){                
+                currentChose = choseTargetPoint();
+                //count++;
+                //debugger;
+            }
         }                
         calculateStep();
         //ctx.rect(stop.x,stop.y,1,1);
@@ -45,7 +59,7 @@ function render(points){
 console.log(Date.now()- t1);
 
 function choseTargetPoint(){
-    let targetTest = Math.floor(Math.random()*4+1);
+    let targetTest = Math.floor(Math.random()*config.startingPoints+1);
     switch (targetTest) {
         case 1:
             target = a;
@@ -89,8 +103,29 @@ function calculateStep(){
     else {stop.y = start.y - ((start.y - target.y)*step)}
 }
 
+function targetId(e){
+    config.startingPoints =  e.target.id*1;
+    squereCanvasWidth();
+    console.log("ilosc poczatkowa: "+ config.startingPoints);
+}
+
+function radioCheck(){
+    let itemlist = document.querySelectorAll('.radio-points');
+    for (let i =0; i<itemlist.lenght; i++){
+        if(itemlist[i].type === "radio" && itemlist[i].checked){
+            console.log("from hell: "+itemlist[i].id);
+        }
+    }
+}
+
+//targetId();
+//radioCheck(document.querySelectorAll('.radio-points'));
+//document.querySelector('.radio-points').addEventListener('load',radioCheck(), true);
+document.querySelector('.radio-points').addEventListener('click',targetId, true);
+
 document.querySelector(".renderChaos").addEventListener("click",()=>{
+    let pointsNumber = document.querySelector("#fieldSliderValue").innerHTML;
     ctx.clearRect(0,0, width, height);
-    render(50000);
+    render(pointsNumber*1);
 });
 //ctx.stroke();
