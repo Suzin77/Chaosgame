@@ -21,23 +21,24 @@ let t1 = Date.now();
 //for(let m = 0 ;  m<canvas.width; m++){
 //    b.x = m;
 
-for(let n=0;n<70000; n++){
+for(let n=0;n<700; n++){
     let count = 1;
     ctx.rect(start.x,start.y,1,1);
     currentChose = choseTargetPoint();
     while(currentChose === lastChose){                
         currentChose = choseTargetPoint();
         count++;
-        debugger;
+        //debugger;
     }                
     calculateStep();
-    ctx.rect(stop.x,stop.y,1,1);
+    //ctx.rect(stop.x,stop.y,1,1);
+    ctx.strokeRect(stop.x,stop.y,1,1);
     //ctx.stroke();
     lastChose = currentChose;
     start.x = stop.x;
     start.y = stop.y;                               
 }
-ctx.stroke();
+//ctx.stroke();
 
 //}
 console.log(Date.now()- t1);
@@ -86,4 +87,4 @@ function calculateStep(){
     if (target.y > start.y){stop.y = start.y + ((target.y - start.y)*step)}
     else {stop.y = start.y - ((start.y - target.y)*step)}
 }
-ctx.stroke();
+//ctx.stroke();
