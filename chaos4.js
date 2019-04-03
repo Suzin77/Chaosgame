@@ -18,12 +18,11 @@ let start = {x:0, y:0}; // startowy punk
 let target = {x:400, y:400}; //docelowy punk
 let step = 0.5;
 let stop ={x:0 , y:0}; // punkt zatrymania w pol drogi. wg stop.
-drawStartPoints();
+
 let lastChose = choseTargetPoint();
 let currentChose = 0;
 let t1 = Date.now();
-//for(let m = 0 ;  m<canvas.width; m++){
-//    b.x = m;
+
 function squereCanvasWidth(){
     if(config.startingPoints === 4){
         b.x = canvas.width;
@@ -34,14 +33,11 @@ function squereCanvasWidth(){
 
 function render(points){
     for(let n=0;n<points; n++){
-        //let count = 1;
         ctx.rect(start.x,start.y,1,1);
         currentChose = choseTargetPoint();
         if (config.startingPoints === 4){
             while(currentChose === lastChose){                
-                currentChose = choseTargetPoint();
-                //count++;
-                //debugger;
+                currentChose = choseTargetPoint();               
             }
         }                
         calculateStep();
@@ -54,8 +50,6 @@ function render(points){
     }
 }
 //ctx.stroke();
-
-//}
 console.log(Date.now()- t1);
 
 function choseTargetPoint(){
@@ -84,16 +78,6 @@ function drawStartPoints(){
     ctx.rect(c.x,c.y, 1,1);
     ctx.stroke();
 }
-
-function drawPoint(){
-    for (let i =0; i<7;i++){
-        stop.x = start.x + ((target.x - start.x)*step);
-        stop.y = stop.y + ((target.y - start.y)*step);
-        ctx.rect(start.x,start.y,1,1);
-        ctx.rect(stop.x,stop.y,1,1);
-        ctx.stroke();
-    }
-} 
 
 function calculateStep(){
     if (target.x > start.x ){ stop.x = start.x + ((target.x- start.x)*step)}
