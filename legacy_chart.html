@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,600" rel="stylesheet" type="text/css">
+        <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
+        <link type="text/css" rel="stylesheet" href="css.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+        <script src="https://cdn.tailwindcss.com"></script>    
+        <title>Legacy wykres</title>
+  </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/index.html">Home</a>
+    <a class="navbar-brand" href="/legacy_chart.html">Legacy wykres</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon">BBB</span>
+    </button>
+  </nav>
+  <canvas id="myChart" style="width:100%;max-width:1700px; height: 900px;"></canvas>
+  <canvas id="myChartSum" style="width:100%;max-width:1700px; height: 900px;"></canvas>
+  <canvas id="myChartDiminishingReturnOfBuilder" style="width:100%;max-width:1700px; height: 900px;"></canvas>
+
+<p id="sumOfPeriods"></p>
+
+<script>
+
+let daily_reward = 90;
+const deminish = 0.35;
+let chartData = [];
+let chartSum = []
+
+let daily_sub = (daily_reward*deminish)/100; 
+//console.log(100/(deminish));
+//console.log(daily_sub.toFixed(6));
+
+for (let i = daily_reward; i>=0; i= daily_reward-daily_sub){
+    let daily_sub = (daily_reward*deminish)/100;
+    //console.log('jestem')
+   
+    daily_reward = +daily_reward.toFixed(5)
+    chartData.push(daily_reward)
+    daily_reward = daily_reward - daily_sub
+    
+    let sum = chartData.reduce((accumulator, current) => accumulator + current);
+    sum = +sum.toFixed(5)
+    chartSum.push(sum);
+}
+
+function rewardSumforLaterStartBuilder(){
+  let sumsOfRewardsForAllPeriods = [];
+  arrayWithDailyRewards = chartData.slice();
+  let length = arrayWithDailyRewards.length;
+
+for(let j = 0;j<length;j++){
+  
+  periodSum = chartSum.at(-1) - chartSum[j];
+  periodSum = +periodSum.toFixed(5);
+  arrayWithDailyRewards.push(periodSum);
+  arrayWithDailyRewards.shift();
+  //periodSum = 0;
+}
+  // let periodSum = arrayWithDailyRewards.reduce((add, curr) => add + curr);
+  // periodSum = +periodSum.toFixed(5);
+  // arrayWithDailyRewards.push(periodSum);
+  // arrayWithDailyRewards.shift();
+  console.log(arrayWithDailyRewards);
+
+  return arrayWithDailyRewards;
+
+}
+
+let deminishingReturnForEachBuilder = rewardSumforLaterStartBuilder();
+
+console.log(deminishingReturnForEachBuilder[0]);
+document.getElementById('sumOfPeriods').innerHTML = deminishingReturnForEachBuilder.length;
+
+//console.log(chartData);
+const xVal = Array.from(Array(1640).keys())
+const xValues = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+
+new Chart("myChart", {
+  type: "line",
+  data: {
+    labels: xVal,
+    datasets: [{ 
+      data: chartData,
+      borderColor: "red",
+      fill: false
+    }]
+  },
+  options: {
+    mantainAspectRatio: false,
+    legend: {display: false}
+  }
+});
+
+new Chart("myChartSum", {
+  type: "line",
+  data: {
+    labels: xVal,
+    datasets: [{ 
+      data: chartSum,
+      borderColor: "blue",
+      fill: false
+    }]
+  },
+  options: {
+    mantainAspectRatio: false,
+    legend: {display: false}
+  }
+});
+
+new Chart("myChartDiminishingReturnOfBuilder", {
+  type: "line",
+  data: {
+    labels: xVal,
+    datasets: [{ 
+      data: deminishingReturnForEachBuilder,
+      borderColor: "blue",
+      fill: false
+    }]
+  },
+  options: {
+    mantainAspectRatio: false,
+    legend: {display: false}
+  }
+});
+
+
+</script>
