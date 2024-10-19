@@ -102,14 +102,11 @@ function radioCheck(){
     }
 }
 
-//targetId();
-//radioCheck(document.querySelectorAll('.radio-points'));
-//document.querySelector('.radio-points').addEventListener('load',radioCheck(), true);
 document.querySelector('.radio-points').addEventListener('click',targetId, true);
 
 document.querySelector(".renderChaos").addEventListener("click",()=>{
     let pointsNumber = document.querySelector("#fieldSliderValue").innerHTML;
     ctx.clearRect(0,0, width, height);
-    render(pointsNumber*1);
+    render(parseInt(pointsNumber));
 });
 //ctx.stroke();
